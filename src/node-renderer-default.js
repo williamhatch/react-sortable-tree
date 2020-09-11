@@ -24,6 +24,7 @@ class NodeRendererDefault extends Component {
       isSearchFocus,
       buttons,
       className,
+      itemClassName,
       style,
       didDrop,
       treeId,
@@ -129,7 +130,8 @@ class NodeRendererDefault extends Component {
                 className={classnames(
                   'rst__rowContents',
                   !canDrag && 'rst__rowContentsDragDisabled',
-                  rowDirectionClass
+                  rowDirectionClass,
+                  itemClassName
                 )}
               >
                 <div className={classnames('rst__rowLabel', rowDirectionClass)}>
