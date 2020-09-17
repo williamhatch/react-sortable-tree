@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import SortableTree from '../src';
+
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
@@ -20,6 +22,16 @@ export default class App extends Component {
         <SortableTree
           treeData={this.state.treeData}
           onChange={treeData => this.setState({ treeData })}
+          hasEndStaff={
+            <input
+              type="text"
+              style={{
+                marginBottom: 29,
+                marginLeft: 17,
+                verticalAlign: 'middle',
+              }}
+            />
+          }
         />
       </div>
     );

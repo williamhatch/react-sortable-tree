@@ -1,33 +1,9 @@
-import withScrolling, {
-  createHorizontalStrength,
-  createScrollingComponent,
-  createVerticalStrength,
-} from 'frontend-collective-react-dnd-scrollzone';
-import isEqual from 'lodash.isequal';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { DndContext, DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { polyfill } from 'react-lifecycles-compat';
-import { AutoSizer, List } from 'react-virtualized';
 import 'react-virtualized/styles.css';
-import NodeRendererDefault from './node-renderer-default';
-import PlaceholderRendererDefault from './placeholder-renderer-default';
 import './react-sortable-tree.css';
-import TreeNode from './tree-node';
-import TreePlaceholder from './tree-placeholder';
-import classnames from './utils/classnames';
-import {
-  defaultGetNodeKey,
-  defaultSearchMethod,
-} from './utils/default-handlers';
-import DndManager from './utils/dnd-manager';
-import { slideRows } from './utils/generic-utils';
-import {
-  memoizedGetDescendantCount,
-  memoizedGetFlatDataFromTree,
-  memoizedInsertNode,
-} from './utils/memoized-tree-data-utils';
+
+import { AutoSizer, List } from 'react-virtualized';
+import { DndContext, DndProvider } from 'react-dnd';
+import React, { Component } from 'react';
 import {
   changeNodeAtPath,
   find,
@@ -36,6 +12,32 @@ import {
   toggleExpandedForAll,
   walk,
 } from './utils/tree-data-utils';
+import {
+  defaultGetNodeKey,
+  defaultSearchMethod,
+} from './utils/default-handlers';
+import {
+  memoizedGetDescendantCount,
+  memoizedGetFlatDataFromTree,
+  memoizedInsertNode,
+} from './utils/memoized-tree-data-utils';
+import withScrolling, {
+  createHorizontalStrength,
+  createScrollingComponent,
+  createVerticalStrength,
+} from 'frontend-collective-react-dnd-scrollzone';
+
+import DndManager from './utils/dnd-manager';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import NodeRendererDefault from './node-renderer-default';
+import PlaceholderRendererDefault from './placeholder-renderer-default';
+import PropTypes from 'prop-types';
+import TreeNode from './tree-node';
+import TreePlaceholder from './tree-placeholder';
+import classnames from './utils/classnames';
+import isEqual from 'lodash.isequal';
+import { polyfill } from 'react-lifecycles-compat';
+import { slideRows } from './utils/generic-utils';
 
 let treeIdCounter = 1;
 
@@ -194,8 +196,8 @@ class ReactSortableTree extends Component {
 
     instanceProps.searchQuery = nextProps.searchQuery;
     instanceProps.searchFocusOffset = nextProps.searchFocusOffset;
-    newState.instanceProps = {...instanceProps, ...newState.instanceProps };
- 
+    newState.instanceProps = { ...instanceProps, ...newState.instanceProps };
+
     return newState;
   }
 
@@ -552,6 +554,7 @@ class ReactSortableTree extends Component {
       scaffoldBlockPxWidth,
       searchFocusOffset,
       rowDirection,
+      hasEndStaff,
     } = mergeTheme(this.props);
     const TreeNodeRenderer = this.treeNodeRenderer;
     const NodeContentRenderer = this.nodeContentRenderer;
@@ -604,6 +607,7 @@ class ReactSortableTree extends Component {
           {...sharedProps}
           {...nodeProps}
         />
+        {hasEndStaff || <span />}
       </TreeNodeRenderer>
     );
   }

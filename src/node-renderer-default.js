@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { isDescendant } from './utils/tree-data-utils';
-import classnames from './utils/classnames';
 import './node-renderer-default.css';
+
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
+import classnames from './utils/classnames';
+import { isDescendant } from './utils/tree-data-utils';
 
 class NodeRendererDefault extends Component {
   render() {
@@ -75,7 +77,7 @@ class NodeRendererDefault extends Component {
     }
 
     return (
-      <div style={{ height: '100%' }} {...otherProps}>
+      <div style={{ height: '100%', display: 'inline-block' }} {...otherProps}>
         {toggleChildrenVisibility &&
           node.children &&
           (node.children.length > 0 || typeof node.children === 'function') && (
