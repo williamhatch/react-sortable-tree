@@ -607,7 +607,7 @@ class ReactSortableTree extends Component {
           {...sharedProps}
           {...nodeProps}
         />
-        {hasEndStaff || <span />}
+        {hasEndStaff || <> </>}
       </TreeNodeRenderer>
     );
   }

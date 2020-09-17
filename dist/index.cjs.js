@@ -2957,7 +2957,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
         isSearchFocus: isSearchFocus,
         canDrag: rowCanDrag,
         toggleChildrenVisibility: this.toggleChildrenVisibility
-      }, sharedProps, nodeProps)), hasEndStaff || /*#__PURE__*/React__default.createElement("span", null));
+      }, sharedProps, nodeProps)), hasEndStaff || /*#__PURE__*/React__default.createElement(React__default.Fragment, null, " "));
     }
   }, {
     key: "render",
