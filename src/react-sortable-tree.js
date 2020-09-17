@@ -4,6 +4,15 @@ import './react-sortable-tree.css';
 import { AutoSizer, List } from 'react-virtualized';
 import { DndContext, DndProvider } from 'react-dnd';
 import React, { Component } from 'react';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import withScrolling, {
+  createHorizontalStrength,
+  createScrollingComponent,
+  createVerticalStrength,
+} from 'frontend-collective-react-dnd-scrollzone';
+import PropTypes from 'prop-types';
+import isEqual from 'lodash.isequal';
+import { polyfill } from 'react-lifecycles-compat';
 import {
   changeNodeAtPath,
   find,
@@ -21,22 +30,13 @@ import {
   memoizedGetFlatDataFromTree,
   memoizedInsertNode,
 } from './utils/memoized-tree-data-utils';
-import withScrolling, {
-  createHorizontalStrength,
-  createScrollingComponent,
-  createVerticalStrength,
-} from 'frontend-collective-react-dnd-scrollzone';
 
 import DndManager from './utils/dnd-manager';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import NodeRendererDefault from './node-renderer-default';
 import PlaceholderRendererDefault from './placeholder-renderer-default';
-import PropTypes from 'prop-types';
 import TreeNode from './tree-node';
 import TreePlaceholder from './tree-placeholder';
 import classnames from './utils/classnames';
-import isEqual from 'lodash.isequal';
-import { polyfill } from 'react-lifecycles-compat';
 import { slideRows } from './utils/generic-utils';
 
 let treeIdCounter = 1;

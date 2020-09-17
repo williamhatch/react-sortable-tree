@@ -4,15 +4,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var withScrolling = require('frontend-collective-react-dnd-scrollzone');
-var withScrolling__default = _interopDefault(withScrolling);
-var isEqual = _interopDefault(require('lodash.isequal'));
-var PropTypes = _interopDefault(require('prop-types'));
+var reactVirtualized = require('react-virtualized');
+var reactDnd = require('react-dnd');
 var React = require('react');
 var React__default = _interopDefault(React);
-var reactDnd = require('react-dnd');
 var reactDndHtml5Backend = require('react-dnd-html5-backend');
-var reactVirtualized = require('react-virtualized');
+var withScrolling = require('frontend-collective-react-dnd-scrollzone');
+var withScrolling__default = _interopDefault(withScrolling);
+var PropTypes = _interopDefault(require('prop-types'));
+var isEqual = _interopDefault(require('lodash.isequal'));
 var reactDom = require('react-dom');
 
 function _typeof(obj) {
@@ -1683,478 +1683,6 @@ function find(_ref25) {
   };
 }
 
-// very simple className utility for creating a classname string...
-// Falsy arguments are ignored:
-//
-// const active = true
-// const className = classnames(
-//    "class1",
-//    !active && "class2",
-//    active && "class3"
-// ); // returns -> class1 class3";
-//
-function classnames() {
-  for (var _len = arguments.length, classes = new Array(_len), _key = 0; _key < _len; _key++) {
-    classes[_key] = arguments[_key];
-  }
-
-  // Use Boolean constructor as a filter callback
-  // Allows for loose type truthy/falsey checks
-  // Boolean("") === false;
-  // Boolean(false) === false;
-  // Boolean(undefined) === false;
-  // Boolean(null) === false;
-  // Boolean(0) === false;
-  // Boolean("classname") === true;
-  return classes.filter(Boolean).join(' ');
-}
-
-var NodeRendererDefault = /*#__PURE__*/function (_Component) {
-  _inherits(NodeRendererDefault, _Component);
-
-  var _super = _createSuper(NodeRendererDefault);
-
-  function NodeRendererDefault() {
-    _classCallCheck(this, NodeRendererDefault);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(NodeRendererDefault, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          scaffoldBlockPxWidth = _this$props.scaffoldBlockPxWidth,
-          toggleChildrenVisibility = _this$props.toggleChildrenVisibility,
-          connectDragPreview = _this$props.connectDragPreview,
-          connectDragSource = _this$props.connectDragSource,
-          isDragging = _this$props.isDragging,
-          canDrop = _this$props.canDrop,
-          canDrag = _this$props.canDrag,
-          node = _this$props.node,
-          title = _this$props.title,
-          subtitle = _this$props.subtitle,
-          draggedNode = _this$props.draggedNode,
-          path = _this$props.path,
-          treeIndex = _this$props.treeIndex,
-          isSearchMatch = _this$props.isSearchMatch,
-          isSearchFocus = _this$props.isSearchFocus,
-          buttons = _this$props.buttons,
-          className = _this$props.className,
-          itemClassName = _this$props.itemClassName,
-          style = _this$props.style,
-          didDrop = _this$props.didDrop,
-          treeId = _this$props.treeId,
-          isOver = _this$props.isOver,
-          parentNode = _this$props.parentNode,
-          rowDirection = _this$props.rowDirection,
-          otherProps = _objectWithoutProperties(_this$props, ["scaffoldBlockPxWidth", "toggleChildrenVisibility", "connectDragPreview", "connectDragSource", "isDragging", "canDrop", "canDrag", "node", "title", "subtitle", "draggedNode", "path", "treeIndex", "isSearchMatch", "isSearchFocus", "buttons", "className", "itemClassName", "style", "didDrop", "treeId", "isOver", "parentNode", "rowDirection"]);
-
-      var nodeTitle = title || node.title;
-      var nodeSubtitle = subtitle || node.subtitle;
-      var rowDirectionClass = rowDirection === 'rtl' ? 'rst__rtl' : null;
-      var handle;
-
-      if (canDrag) {
-        if (typeof node.children === 'function' && node.expanded) {
-          // Show a loading symbol on the handle when the children are expanded
-          //  and yet still defined by a function (a callback to fetch the children)
-          handle = /*#__PURE__*/React__default.createElement("div", {
-            className: "rst__loadingHandle"
-          }, /*#__PURE__*/React__default.createElement("div", {
-            className: "rst__loadingCircle"
-          }, _toConsumableArray(new Array(12)).map(function (_, index) {
-            return /*#__PURE__*/React__default.createElement("div", {
-              // eslint-disable-next-line react/no-array-index-key
-              key: index,
-              className: classnames('rst__loadingCirclePoint', rowDirectionClass)
-            });
-          })));
-        } else {
-          // Show the handle used to initiate a drag-and-drop
-          handle = connectDragSource( /*#__PURE__*/React__default.createElement("div", {
-            className: "rst__moveHandle"
-          }), {
-            dropEffect: 'copy'
-          });
-        }
-      }
-
-      var isDraggedDescendant = draggedNode && isDescendant(draggedNode, node);
-      var isLandingPadActive = !didDrop && isDragging;
-      var buttonStyle = {
-        left: -0.5 * scaffoldBlockPxWidth
-      };
-
-      if (rowDirection === 'rtl') {
-        buttonStyle = {
-          right: -0.5 * scaffoldBlockPxWidth
-        };
-      }
-
-      return /*#__PURE__*/React__default.createElement("div", _extends({
-        style: {
-          height: '100%'
-        }
-      }, otherProps), toggleChildrenVisibility && node.children && (node.children.length > 0 || typeof node.children === 'function') && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("button", {
-        type: "button",
-        "aria-label": node.expanded ? 'Collapse' : 'Expand',
-        className: classnames(node.expanded ? 'rst__collapseButton' : 'rst__expandButton', rowDirectionClass),
-        style: buttonStyle,
-        onClick: function onClick() {
-          return toggleChildrenVisibility({
-            node: node,
-            path: path,
-            treeIndex: treeIndex
-          });
-        }
-      }), node.expanded && !isDragging && /*#__PURE__*/React__default.createElement("div", {
-        style: {
-          width: scaffoldBlockPxWidth
-        },
-        className: classnames('rst__lineChildren', rowDirectionClass)
-      })), /*#__PURE__*/React__default.createElement("div", {
-        className: classnames('rst__rowWrapper', rowDirectionClass)
-      }, connectDragPreview( /*#__PURE__*/React__default.createElement("div", {
-        className: classnames('rst__row', isLandingPadActive && 'rst__rowLandingPad', isLandingPadActive && !canDrop && 'rst__rowCancelPad', isSearchMatch && 'rst__rowSearchMatch', isSearchFocus && 'rst__rowSearchFocus', rowDirectionClass, className),
-        style: _objectSpread2({
-          opacity: isDraggedDescendant ? 0.5 : 1
-        }, style)
-      }, handle, /*#__PURE__*/React__default.createElement("div", {
-        className: classnames('rst__rowContents', !canDrag && 'rst__rowContentsDragDisabled', rowDirectionClass, itemClassName)
-      }, /*#__PURE__*/React__default.createElement("div", {
-        className: classnames('rst__rowLabel', rowDirectionClass)
-      }, /*#__PURE__*/React__default.createElement("span", {
-        className: classnames('rst__rowTitle', node.subtitle && 'rst__rowTitleWithSubtitle')
-      }, typeof nodeTitle === 'function' ? nodeTitle({
-        node: node,
-        path: path,
-        treeIndex: treeIndex
-      }) : nodeTitle), nodeSubtitle && /*#__PURE__*/React__default.createElement("span", {
-        className: "rst__rowSubtitle"
-      }, typeof nodeSubtitle === 'function' ? nodeSubtitle({
-        node: node,
-        path: path,
-        treeIndex: treeIndex
-      }) : nodeSubtitle)), /*#__PURE__*/React__default.createElement("div", {
-        className: "rst__rowToolbar"
-      }, buttons.map(function (btn, index) {
-        return /*#__PURE__*/React__default.createElement("div", {
-          key: index // eslint-disable-line react/no-array-index-key
-          ,
-          className: "rst__toolbarButton"
-        }, btn);
-      })))))));
-    }
-  }]);
-
-  return NodeRendererDefault;
-}(React.Component);
-
-NodeRendererDefault.defaultProps = {
-  isSearchMatch: false,
-  isSearchFocus: false,
-  canDrag: false,
-  toggleChildrenVisibility: null,
-  buttons: [],
-  className: '',
-  style: {},
-  parentNode: null,
-  draggedNode: null,
-  canDrop: false,
-  title: null,
-  subtitle: null,
-  rowDirection: 'ltr'
-};
-NodeRendererDefault.propTypes = {
-  node: PropTypes.shape({}).isRequired,
-  title: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  subtitle: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  path: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
-  treeIndex: PropTypes.number.isRequired,
-  treeId: PropTypes.string.isRequired,
-  isSearchMatch: PropTypes.bool,
-  isSearchFocus: PropTypes.bool,
-  canDrag: PropTypes.bool,
-  scaffoldBlockPxWidth: PropTypes.number.isRequired,
-  toggleChildrenVisibility: PropTypes.func,
-  buttons: PropTypes.arrayOf(PropTypes.node),
-  className: PropTypes.string,
-  style: PropTypes.shape({}),
-  // Drag and drop API functions
-  // Drag source
-  connectDragPreview: PropTypes.func.isRequired,
-  connectDragSource: PropTypes.func.isRequired,
-  parentNode: PropTypes.shape({}),
-  // Needed for dndManager
-  isDragging: PropTypes.bool.isRequired,
-  didDrop: PropTypes.bool.isRequired,
-  draggedNode: PropTypes.shape({}),
-  // Drop target
-  isOver: PropTypes.bool.isRequired,
-  canDrop: PropTypes.bool,
-  // rtl support
-  rowDirection: PropTypes.string
-};
-
-var PlaceholderRendererDefault = function PlaceholderRendererDefault(_ref) {
-  var isOver = _ref.isOver,
-      canDrop = _ref.canDrop;
-  return /*#__PURE__*/React__default.createElement("div", {
-    className: classnames('rst__placeholder', canDrop && 'rst__placeholderLandingPad', canDrop && !isOver && 'rst__placeholderCancelPad')
-  });
-};
-
-PlaceholderRendererDefault.defaultProps = {
-  isOver: false,
-  canDrop: false
-};
-PlaceholderRendererDefault.propTypes = {
-  isOver: PropTypes.bool,
-  canDrop: PropTypes.bool
-};
-
-var TreeNode = /*#__PURE__*/function (_Component) {
-  _inherits(TreeNode, _Component);
-
-  var _super = _createSuper(TreeNode);
-
-  function TreeNode() {
-    _classCallCheck(this, TreeNode);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(TreeNode, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          children = _this$props.children,
-          listIndex = _this$props.listIndex,
-          swapFrom = _this$props.swapFrom,
-          swapLength = _this$props.swapLength,
-          swapDepth = _this$props.swapDepth,
-          scaffoldBlockPxWidth = _this$props.scaffoldBlockPxWidth,
-          lowerSiblingCounts = _this$props.lowerSiblingCounts,
-          connectDropTarget = _this$props.connectDropTarget,
-          isOver = _this$props.isOver,
-          draggedNode = _this$props.draggedNode,
-          canDrop = _this$props.canDrop,
-          treeIndex = _this$props.treeIndex,
-          treeId = _this$props.treeId,
-          getPrevRow = _this$props.getPrevRow,
-          node = _this$props.node,
-          path = _this$props.path,
-          rowDirection = _this$props.rowDirection,
-          otherProps = _objectWithoutProperties(_this$props, ["children", "listIndex", "swapFrom", "swapLength", "swapDepth", "scaffoldBlockPxWidth", "lowerSiblingCounts", "connectDropTarget", "isOver", "draggedNode", "canDrop", "treeIndex", "treeId", "getPrevRow", "node", "path", "rowDirection"]);
-
-      var rowDirectionClass = rowDirection === 'rtl' ? 'rst__rtl' : null; // Construct the scaffold representing the structure of the tree
-
-      var scaffoldBlockCount = lowerSiblingCounts.length;
-      var scaffold = [];
-      lowerSiblingCounts.forEach(function (lowerSiblingCount, i) {
-        var lineClass = '';
-
-        if (lowerSiblingCount > 0) {
-          // At this level in the tree, the nodes had sibling nodes further down
-          if (listIndex === 0) {
-            // Top-left corner of the tree
-            // +-----+
-            // |     |
-            // |  +--+
-            // |  |  |
-            // +--+--+
-            lineClass = 'rst__lineHalfHorizontalRight rst__lineHalfVerticalBottom';
-          } else if (i === scaffoldBlockCount - 1) {
-            // Last scaffold block in the row, right before the row content
-            // +--+--+
-            // |  |  |
-            // |  +--+
-            // |  |  |
-            // +--+--+
-            lineClass = 'rst__lineHalfHorizontalRight rst__lineFullVertical';
-          } else {
-            // Simply connecting the line extending down to the next sibling on this level
-            // +--+--+
-            // |  |  |
-            // |  |  |
-            // |  |  |
-            // +--+--+
-            lineClass = 'rst__lineFullVertical';
-          }
-        } else if (listIndex === 0) {
-          // Top-left corner of the tree, but has no siblings
-          // +-----+
-          // |     |
-          // |  +--+
-          // |     |
-          // +-----+
-          lineClass = 'rst__lineHalfHorizontalRight';
-        } else if (i === scaffoldBlockCount - 1) {
-          // The last or only node in this level of the tree
-          // +--+--+
-          // |  |  |
-          // |  +--+
-          // |     |
-          // +-----+
-          lineClass = 'rst__lineHalfVerticalTop rst__lineHalfHorizontalRight';
-        }
-
-        scaffold.push( /*#__PURE__*/React__default.createElement("div", {
-          key: "pre_".concat(1 + i),
-          style: {
-            width: scaffoldBlockPxWidth
-          },
-          className: classnames('rst__lineBlock', lineClass, rowDirectionClass)
-        }));
-
-        if (treeIndex !== listIndex && i === swapDepth) {
-          // This row has been shifted, and is at the depth of
-          // the line pointing to the new destination
-          var highlightLineClass = '';
-
-          if (listIndex === swapFrom + swapLength - 1) {
-            // This block is on the bottom (target) line
-            // This block points at the target block (where the row will go when released)
-            highlightLineClass = 'rst__highlightBottomLeftCorner';
-          } else if (treeIndex === swapFrom) {
-            // This block is on the top (source) line
-            highlightLineClass = 'rst__highlightTopLeftCorner';
-          } else {
-            // This block is between the bottom and top
-            highlightLineClass = 'rst__highlightLineVertical';
-          }
-
-          var _style;
-
-          if (rowDirection === 'rtl') {
-            _style = {
-              width: scaffoldBlockPxWidth,
-              right: scaffoldBlockPxWidth * i
-            };
-          } else {
-            // Default ltr
-            _style = {
-              width: scaffoldBlockPxWidth,
-              left: scaffoldBlockPxWidth * i
-            };
-          }
-
-          scaffold.push( /*#__PURE__*/React__default.createElement("div", {
-            // eslint-disable-next-line react/no-array-index-key
-            key: i,
-            style: _style,
-            className: classnames('rst__absoluteLineBlock', highlightLineClass, rowDirectionClass)
-          }));
-        }
-      });
-      var style;
-
-      if (rowDirection === 'rtl') {
-        style = {
-          right: scaffoldBlockPxWidth * scaffoldBlockCount
-        };
-      } else {
-        // Default ltr
-        style = {
-          left: scaffoldBlockPxWidth * scaffoldBlockCount
-        };
-      }
-
-      return connectDropTarget( /*#__PURE__*/React__default.createElement("div", _extends({}, otherProps, {
-        className: classnames('rst__node', rowDirectionClass)
-      }), scaffold, /*#__PURE__*/React__default.createElement("div", {
-        className: "rst__nodeContent",
-        style: style
-      }, React.Children.map(children, function (child) {
-        return /*#__PURE__*/React.cloneElement(child, {
-          isOver: isOver,
-          canDrop: canDrop,
-          draggedNode: draggedNode
-        });
-      }))));
-    }
-  }]);
-
-  return TreeNode;
-}(React.Component);
-
-TreeNode.defaultProps = {
-  swapFrom: null,
-  swapDepth: null,
-  swapLength: null,
-  canDrop: false,
-  draggedNode: null,
-  rowDirection: 'ltr'
-};
-TreeNode.propTypes = {
-  treeIndex: PropTypes.number.isRequired,
-  treeId: PropTypes.string.isRequired,
-  swapFrom: PropTypes.number,
-  swapDepth: PropTypes.number,
-  swapLength: PropTypes.number,
-  scaffoldBlockPxWidth: PropTypes.number.isRequired,
-  lowerSiblingCounts: PropTypes.arrayOf(PropTypes.number).isRequired,
-  listIndex: PropTypes.number.isRequired,
-  children: PropTypes.node.isRequired,
-  // Drop target
-  connectDropTarget: PropTypes.func.isRequired,
-  isOver: PropTypes.bool.isRequired,
-  canDrop: PropTypes.bool,
-  draggedNode: PropTypes.shape({}),
-  // used in dndManager
-  getPrevRow: PropTypes.func.isRequired,
-  node: PropTypes.shape({}).isRequired,
-  path: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
-  // rtl support
-  rowDirection: PropTypes.string
-};
-
-var TreePlaceholder = /*#__PURE__*/function (_Component) {
-  _inherits(TreePlaceholder, _Component);
-
-  var _super = _createSuper(TreePlaceholder);
-
-  function TreePlaceholder() {
-    _classCallCheck(this, TreePlaceholder);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(TreePlaceholder, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          children = _this$props.children,
-          connectDropTarget = _this$props.connectDropTarget,
-          treeId = _this$props.treeId,
-          drop = _this$props.drop,
-          otherProps = _objectWithoutProperties(_this$props, ["children", "connectDropTarget", "treeId", "drop"]);
-
-      return connectDropTarget( /*#__PURE__*/React__default.createElement("div", null, React.Children.map(children, function (child) {
-        return /*#__PURE__*/React.cloneElement(child, _objectSpread2({}, otherProps));
-      })));
-    }
-  }]);
-
-  return TreePlaceholder;
-}(React.Component);
-
-TreePlaceholder.defaultProps = {
-  canDrop: false,
-  draggedNode: null
-};
-TreePlaceholder.propTypes = {
-  children: PropTypes.node.isRequired,
-  // Drop target
-  connectDropTarget: PropTypes.func.isRequired,
-  isOver: PropTypes.bool.isRequired,
-  canDrop: PropTypes.bool,
-  draggedNode: PropTypes.shape({}),
-  treeId: PropTypes.string.isRequired,
-  drop: PropTypes.func.isRequired
-};
-
 function defaultGetNodeKey(_ref) {
   var treeIndex = _ref.treeIndex;
   return treeIndex;
@@ -2523,6 +2051,479 @@ var DndManager = /*#__PURE__*/function () {
 
   return DndManager;
 }();
+
+// very simple className utility for creating a classname string...
+// Falsy arguments are ignored:
+//
+// const active = true
+// const className = classnames(
+//    "class1",
+//    !active && "class2",
+//    active && "class3"
+// ); // returns -> class1 class3";
+//
+function classnames() {
+  for (var _len = arguments.length, classes = new Array(_len), _key = 0; _key < _len; _key++) {
+    classes[_key] = arguments[_key];
+  }
+
+  // Use Boolean constructor as a filter callback
+  // Allows for loose type truthy/falsey checks
+  // Boolean("") === false;
+  // Boolean(false) === false;
+  // Boolean(undefined) === false;
+  // Boolean(null) === false;
+  // Boolean(0) === false;
+  // Boolean("classname") === true;
+  return classes.filter(Boolean).join(' ');
+}
+
+var NodeRendererDefault = /*#__PURE__*/function (_Component) {
+  _inherits(NodeRendererDefault, _Component);
+
+  var _super = _createSuper(NodeRendererDefault);
+
+  function NodeRendererDefault() {
+    _classCallCheck(this, NodeRendererDefault);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(NodeRendererDefault, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          scaffoldBlockPxWidth = _this$props.scaffoldBlockPxWidth,
+          toggleChildrenVisibility = _this$props.toggleChildrenVisibility,
+          connectDragPreview = _this$props.connectDragPreview,
+          connectDragSource = _this$props.connectDragSource,
+          isDragging = _this$props.isDragging,
+          canDrop = _this$props.canDrop,
+          canDrag = _this$props.canDrag,
+          node = _this$props.node,
+          title = _this$props.title,
+          subtitle = _this$props.subtitle,
+          draggedNode = _this$props.draggedNode,
+          path = _this$props.path,
+          treeIndex = _this$props.treeIndex,
+          isSearchMatch = _this$props.isSearchMatch,
+          isSearchFocus = _this$props.isSearchFocus,
+          buttons = _this$props.buttons,
+          className = _this$props.className,
+          itemClassName = _this$props.itemClassName,
+          style = _this$props.style,
+          didDrop = _this$props.didDrop,
+          treeId = _this$props.treeId,
+          isOver = _this$props.isOver,
+          parentNode = _this$props.parentNode,
+          rowDirection = _this$props.rowDirection,
+          otherProps = _objectWithoutProperties(_this$props, ["scaffoldBlockPxWidth", "toggleChildrenVisibility", "connectDragPreview", "connectDragSource", "isDragging", "canDrop", "canDrag", "node", "title", "subtitle", "draggedNode", "path", "treeIndex", "isSearchMatch", "isSearchFocus", "buttons", "className", "itemClassName", "style", "didDrop", "treeId", "isOver", "parentNode", "rowDirection"]);
+
+      var nodeTitle = title || node.title;
+      var nodeSubtitle = subtitle || node.subtitle;
+      var rowDirectionClass = rowDirection === 'rtl' ? 'rst__rtl' : null;
+      var handle;
+
+      if (canDrag) {
+        if (typeof node.children === 'function' && node.expanded) {
+          // Show a loading symbol on the handle when the children are expanded
+          //  and yet still defined by a function (a callback to fetch the children)
+          handle = /*#__PURE__*/React__default.createElement("div", {
+            className: "rst__loadingHandle"
+          }, /*#__PURE__*/React__default.createElement("div", {
+            className: "rst__loadingCircle"
+          }, _toConsumableArray(new Array(12)).map(function (_, index) {
+            return /*#__PURE__*/React__default.createElement("div", {
+              // eslint-disable-next-line react/no-array-index-key
+              key: index,
+              className: classnames('rst__loadingCirclePoint', rowDirectionClass)
+            });
+          })));
+        } else {
+          // Show the handle used to initiate a drag-and-drop
+          handle = connectDragSource( /*#__PURE__*/React__default.createElement("div", {
+            className: "rst__moveHandle"
+          }), {
+            dropEffect: 'copy'
+          });
+        }
+      }
+
+      var isDraggedDescendant = draggedNode && isDescendant(draggedNode, node);
+      var isLandingPadActive = !didDrop && isDragging;
+      var buttonStyle = {
+        left: -0.5 * scaffoldBlockPxWidth
+      };
+
+      if (rowDirection === 'rtl') {
+        buttonStyle = {
+          right: -0.5 * scaffoldBlockPxWidth
+        };
+      }
+
+      return /*#__PURE__*/React__default.createElement("div", _extends({
+        style: {
+          height: '100%',
+          display: 'inline-block'
+        }
+      }, otherProps), toggleChildrenVisibility && node.children && (node.children.length > 0 || typeof node.children === 'function') && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("button", {
+        type: "button",
+        "aria-label": node.expanded ? 'Collapse' : 'Expand',
+        className: classnames(node.expanded ? 'rst__collapseButton' : 'rst__expandButton', rowDirectionClass),
+        style: buttonStyle,
+        onClick: function onClick() {
+          return toggleChildrenVisibility({
+            node: node,
+            path: path,
+            treeIndex: treeIndex
+          });
+        }
+      }), node.expanded && !isDragging && /*#__PURE__*/React__default.createElement("div", {
+        style: {
+          width: scaffoldBlockPxWidth
+        },
+        className: classnames('rst__lineChildren', rowDirectionClass)
+      })), /*#__PURE__*/React__default.createElement("div", {
+        className: classnames('rst__rowWrapper', rowDirectionClass)
+      }, connectDragPreview( /*#__PURE__*/React__default.createElement("div", {
+        className: classnames('rst__row', isLandingPadActive && 'rst__rowLandingPad', isLandingPadActive && !canDrop && 'rst__rowCancelPad', isSearchMatch && 'rst__rowSearchMatch', isSearchFocus && 'rst__rowSearchFocus', rowDirectionClass, className),
+        style: _objectSpread2({
+          opacity: isDraggedDescendant ? 0.5 : 1
+        }, style)
+      }, handle, /*#__PURE__*/React__default.createElement("div", {
+        className: classnames('rst__rowContents', !canDrag && 'rst__rowContentsDragDisabled', rowDirectionClass, itemClassName)
+      }, /*#__PURE__*/React__default.createElement("div", {
+        className: classnames('rst__rowLabel', rowDirectionClass)
+      }, /*#__PURE__*/React__default.createElement("span", {
+        className: classnames('rst__rowTitle', node.subtitle && 'rst__rowTitleWithSubtitle')
+      }, typeof nodeTitle === 'function' ? nodeTitle({
+        node: node,
+        path: path,
+        treeIndex: treeIndex
+      }) : nodeTitle), nodeSubtitle && /*#__PURE__*/React__default.createElement("span", {
+        className: "rst__rowSubtitle"
+      }, typeof nodeSubtitle === 'function' ? nodeSubtitle({
+        node: node,
+        path: path,
+        treeIndex: treeIndex
+      }) : nodeSubtitle)), /*#__PURE__*/React__default.createElement("div", {
+        className: "rst__rowToolbar"
+      }, buttons.map(function (btn, index) {
+        return /*#__PURE__*/React__default.createElement("div", {
+          key: index // eslint-disable-line react/no-array-index-key
+          ,
+          className: "rst__toolbarButton"
+        }, btn);
+      })))))));
+    }
+  }]);
+
+  return NodeRendererDefault;
+}(React.Component);
+
+NodeRendererDefault.defaultProps = {
+  isSearchMatch: false,
+  isSearchFocus: false,
+  canDrag: false,
+  toggleChildrenVisibility: null,
+  buttons: [],
+  className: '',
+  style: {},
+  parentNode: null,
+  draggedNode: null,
+  canDrop: false,
+  title: null,
+  subtitle: null,
+  rowDirection: 'ltr'
+};
+NodeRendererDefault.propTypes = {
+  node: PropTypes.shape({}).isRequired,
+  title: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+  subtitle: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+  path: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+  treeIndex: PropTypes.number.isRequired,
+  treeId: PropTypes.string.isRequired,
+  isSearchMatch: PropTypes.bool,
+  isSearchFocus: PropTypes.bool,
+  canDrag: PropTypes.bool,
+  scaffoldBlockPxWidth: PropTypes.number.isRequired,
+  toggleChildrenVisibility: PropTypes.func,
+  buttons: PropTypes.arrayOf(PropTypes.node),
+  className: PropTypes.string,
+  style: PropTypes.shape({}),
+  // Drag and drop API functions
+  // Drag source
+  connectDragPreview: PropTypes.func.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  parentNode: PropTypes.shape({}),
+  // Needed for dndManager
+  isDragging: PropTypes.bool.isRequired,
+  didDrop: PropTypes.bool.isRequired,
+  draggedNode: PropTypes.shape({}),
+  // Drop target
+  isOver: PropTypes.bool.isRequired,
+  canDrop: PropTypes.bool,
+  // rtl support
+  rowDirection: PropTypes.string
+};
+
+var PlaceholderRendererDefault = function PlaceholderRendererDefault(_ref) {
+  var isOver = _ref.isOver,
+      canDrop = _ref.canDrop;
+  return /*#__PURE__*/React__default.createElement("div", {
+    className: classnames('rst__placeholder', canDrop && 'rst__placeholderLandingPad', canDrop && !isOver && 'rst__placeholderCancelPad')
+  });
+};
+
+PlaceholderRendererDefault.defaultProps = {
+  isOver: false,
+  canDrop: false
+};
+PlaceholderRendererDefault.propTypes = {
+  isOver: PropTypes.bool,
+  canDrop: PropTypes.bool
+};
+
+var TreeNode = /*#__PURE__*/function (_Component) {
+  _inherits(TreeNode, _Component);
+
+  var _super = _createSuper(TreeNode);
+
+  function TreeNode() {
+    _classCallCheck(this, TreeNode);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(TreeNode, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          children = _this$props.children,
+          listIndex = _this$props.listIndex,
+          swapFrom = _this$props.swapFrom,
+          swapLength = _this$props.swapLength,
+          swapDepth = _this$props.swapDepth,
+          scaffoldBlockPxWidth = _this$props.scaffoldBlockPxWidth,
+          lowerSiblingCounts = _this$props.lowerSiblingCounts,
+          connectDropTarget = _this$props.connectDropTarget,
+          isOver = _this$props.isOver,
+          draggedNode = _this$props.draggedNode,
+          canDrop = _this$props.canDrop,
+          treeIndex = _this$props.treeIndex,
+          treeId = _this$props.treeId,
+          getPrevRow = _this$props.getPrevRow,
+          node = _this$props.node,
+          path = _this$props.path,
+          rowDirection = _this$props.rowDirection,
+          otherProps = _objectWithoutProperties(_this$props, ["children", "listIndex", "swapFrom", "swapLength", "swapDepth", "scaffoldBlockPxWidth", "lowerSiblingCounts", "connectDropTarget", "isOver", "draggedNode", "canDrop", "treeIndex", "treeId", "getPrevRow", "node", "path", "rowDirection"]);
+
+      var rowDirectionClass = rowDirection === 'rtl' ? 'rst__rtl' : null; // Construct the scaffold representing the structure of the tree
+
+      var scaffoldBlockCount = lowerSiblingCounts.length;
+      var scaffold = [];
+      lowerSiblingCounts.forEach(function (lowerSiblingCount, i) {
+        var lineClass = '';
+
+        if (lowerSiblingCount > 0) {
+          // At this level in the tree, the nodes had sibling nodes further down
+          if (listIndex === 0) {
+            // Top-left corner of the tree
+            // +-----+
+            // |     |
+            // |  +--+
+            // |  |  |
+            // +--+--+
+            lineClass = 'rst__lineHalfHorizontalRight rst__lineHalfVerticalBottom';
+          } else if (i === scaffoldBlockCount - 1) {
+            // Last scaffold block in the row, right before the row content
+            // +--+--+
+            // |  |  |
+            // |  +--+
+            // |  |  |
+            // +--+--+
+            lineClass = 'rst__lineHalfHorizontalRight rst__lineFullVertical';
+          } else {
+            // Simply connecting the line extending down to the next sibling on this level
+            // +--+--+
+            // |  |  |
+            // |  |  |
+            // |  |  |
+            // +--+--+
+            lineClass = 'rst__lineFullVertical';
+          }
+        } else if (listIndex === 0) {
+          // Top-left corner of the tree, but has no siblings
+          // +-----+
+          // |     |
+          // |  +--+
+          // |     |
+          // +-----+
+          lineClass = 'rst__lineHalfHorizontalRight';
+        } else if (i === scaffoldBlockCount - 1) {
+          // The last or only node in this level of the tree
+          // +--+--+
+          // |  |  |
+          // |  +--+
+          // |     |
+          // +-----+
+          lineClass = 'rst__lineHalfVerticalTop rst__lineHalfHorizontalRight';
+        }
+
+        scaffold.push( /*#__PURE__*/React__default.createElement("div", {
+          key: "pre_".concat(1 + i),
+          style: {
+            width: scaffoldBlockPxWidth
+          },
+          className: classnames('rst__lineBlock', lineClass, rowDirectionClass)
+        }));
+
+        if (treeIndex !== listIndex && i === swapDepth) {
+          // This row has been shifted, and is at the depth of
+          // the line pointing to the new destination
+          var highlightLineClass = '';
+
+          if (listIndex === swapFrom + swapLength - 1) {
+            // This block is on the bottom (target) line
+            // This block points at the target block (where the row will go when released)
+            highlightLineClass = 'rst__highlightBottomLeftCorner';
+          } else if (treeIndex === swapFrom) {
+            // This block is on the top (source) line
+            highlightLineClass = 'rst__highlightTopLeftCorner';
+          } else {
+            // This block is between the bottom and top
+            highlightLineClass = 'rst__highlightLineVertical';
+          }
+
+          var _style;
+
+          if (rowDirection === 'rtl') {
+            _style = {
+              width: scaffoldBlockPxWidth,
+              right: scaffoldBlockPxWidth * i
+            };
+          } else {
+            // Default ltr
+            _style = {
+              width: scaffoldBlockPxWidth,
+              left: scaffoldBlockPxWidth * i
+            };
+          }
+
+          scaffold.push( /*#__PURE__*/React__default.createElement("div", {
+            // eslint-disable-next-line react/no-array-index-key
+            key: i,
+            style: _style,
+            className: classnames('rst__absoluteLineBlock', highlightLineClass, rowDirectionClass)
+          }));
+        }
+      });
+      var style;
+
+      if (rowDirection === 'rtl') {
+        style = {
+          right: scaffoldBlockPxWidth * scaffoldBlockCount
+        };
+      } else {
+        // Default ltr
+        style = {
+          left: scaffoldBlockPxWidth * scaffoldBlockCount
+        };
+      }
+
+      return connectDropTarget( /*#__PURE__*/React__default.createElement("div", _extends({}, otherProps, {
+        className: classnames('rst__node', rowDirectionClass)
+      }), scaffold, /*#__PURE__*/React__default.createElement("div", {
+        className: "rst__nodeContent",
+        style: style
+      }, React.Children.map(children, function (child) {
+        return /*#__PURE__*/React.cloneElement(child, {
+          isOver: isOver,
+          canDrop: canDrop,
+          draggedNode: draggedNode
+        });
+      }))));
+    }
+  }]);
+
+  return TreeNode;
+}(React.Component);
+
+TreeNode.defaultProps = {
+  swapFrom: null,
+  swapDepth: null,
+  swapLength: null,
+  canDrop: false,
+  draggedNode: null,
+  rowDirection: 'ltr'
+};
+TreeNode.propTypes = {
+  treeIndex: PropTypes.number.isRequired,
+  treeId: PropTypes.string.isRequired,
+  swapFrom: PropTypes.number,
+  swapDepth: PropTypes.number,
+  swapLength: PropTypes.number,
+  scaffoldBlockPxWidth: PropTypes.number.isRequired,
+  lowerSiblingCounts: PropTypes.arrayOf(PropTypes.number).isRequired,
+  listIndex: PropTypes.number.isRequired,
+  children: PropTypes.node.isRequired,
+  // Drop target
+  connectDropTarget: PropTypes.func.isRequired,
+  isOver: PropTypes.bool.isRequired,
+  canDrop: PropTypes.bool,
+  draggedNode: PropTypes.shape({}),
+  // used in dndManager
+  getPrevRow: PropTypes.func.isRequired,
+  node: PropTypes.shape({}).isRequired,
+  path: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+  // rtl support
+  rowDirection: PropTypes.string
+};
+
+var TreePlaceholder = /*#__PURE__*/function (_Component) {
+  _inherits(TreePlaceholder, _Component);
+
+  var _super = _createSuper(TreePlaceholder);
+
+  function TreePlaceholder() {
+    _classCallCheck(this, TreePlaceholder);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(TreePlaceholder, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          children = _this$props.children,
+          connectDropTarget = _this$props.connectDropTarget,
+          treeId = _this$props.treeId,
+          drop = _this$props.drop,
+          otherProps = _objectWithoutProperties(_this$props, ["children", "connectDropTarget", "treeId", "drop"]);
+
+      return connectDropTarget( /*#__PURE__*/React__default.createElement("div", null, React.Children.map(children, function (child) {
+        return /*#__PURE__*/React.cloneElement(child, _objectSpread2({}, otherProps));
+      })));
+    }
+  }]);
+
+  return TreePlaceholder;
+}(React.Component);
+
+TreePlaceholder.defaultProps = {
+  canDrop: false,
+  draggedNode: null
+};
+TreePlaceholder.propTypes = {
+  children: PropTypes.node.isRequired,
+  // Drop target
+  connectDropTarget: PropTypes.func.isRequired,
+  isOver: PropTypes.bool.isRequired,
+  canDrop: PropTypes.bool,
+  draggedNode: PropTypes.shape({}),
+  treeId: PropTypes.string.isRequired,
+  drop: PropTypes.func.isRequired
+};
 
 /* eslint-disable import/prefer-default-export */
 function slideRows(rows, fromIndex, toIndex) {
@@ -2913,7 +2914,8 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
           generateNodeProps = _mergeTheme2.generateNodeProps,
           scaffoldBlockPxWidth = _mergeTheme2.scaffoldBlockPxWidth,
           searchFocusOffset = _mergeTheme2.searchFocusOffset,
-          rowDirection = _mergeTheme2.rowDirection;
+          rowDirection = _mergeTheme2.rowDirection,
+          hasEndStaff = _mergeTheme2.hasEndStaff;
 
       var TreeNodeRenderer = this.treeNodeRenderer;
       var NodeContentRenderer = this.nodeContentRenderer;
@@ -2954,7 +2956,7 @@ var ReactSortableTree = /*#__PURE__*/function (_Component) {
         isSearchFocus: isSearchFocus,
         canDrag: rowCanDrag,
         toggleChildrenVisibility: this.toggleChildrenVisibility
-      }, sharedProps, nodeProps)));
+      }, sharedProps, nodeProps)), hasEndStaff || /*#__PURE__*/React__default.createElement("span", null));
     }
   }, {
     key: "render",
