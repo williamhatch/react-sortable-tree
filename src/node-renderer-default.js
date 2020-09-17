@@ -27,6 +27,7 @@ class NodeRendererDefault extends Component {
       buttons,
       className,
       itemClassName,
+      hasEndStaff,
       style,
       didDrop,
       treeId,
@@ -77,109 +78,121 @@ class NodeRendererDefault extends Component {
     }
 
     return (
-      <div style={{ height: '100%', display: 'inline-block' }} {...otherProps}>
-        {toggleChildrenVisibility &&
-          node.children &&
-          (node.children.length > 0 || typeof node.children === 'function') && (
-            <div>
-              <button
-                type="button"
-                aria-label={node.expanded ? 'Collapse' : 'Expand'}
-                className={classnames(
-                  node.expanded ? 'rst__collapseButton' : 'rst__expandButton',
-                  rowDirectionClass
-                )}
-                style={buttonStyle}
-                onClick={() =>
-                  toggleChildrenVisibility({
-                    node,
-                    path,
-                    treeIndex,
-                  })
-                }
-              />
-
-              {node.expanded && !isDragging && (
-                <div
-                  style={{ width: scaffoldBlockPxWidth }}
-                  className={classnames('rst__lineChildren', rowDirectionClass)}
+      <>
+        <div
+          style={{ height: '100%', display: 'inline-block' }}
+          {...otherProps}
+        >
+          {toggleChildrenVisibility &&
+            node.children &&
+            (node.children.length > 0 ||
+              typeof node.children === 'function') && (
+              <div>
+                <button
+                  type="button"
+                  aria-label={node.expanded ? 'Collapse' : 'Expand'}
+                  className={classnames(
+                    node.expanded ? 'rst__collapseButton' : 'rst__expandButton',
+                    rowDirectionClass
+                  )}
+                  style={buttonStyle}
+                  onClick={() =>
+                    toggleChildrenVisibility({
+                      node,
+                      path,
+                      treeIndex,
+                    })
+                  }
                 />
-              )}
-            </div>
-          )}
 
-        <div className={classnames('rst__rowWrapper', rowDirectionClass)}>
-          {/* Set the row preview to be used during drag and drop */}
-          {connectDragPreview(
-            <div
-              className={classnames(
-                'rst__row',
-                isLandingPadActive && 'rst__rowLandingPad',
-                isLandingPadActive && !canDrop && 'rst__rowCancelPad',
-                isSearchMatch && 'rst__rowSearchMatch',
-                isSearchFocus && 'rst__rowSearchFocus',
-                rowDirectionClass,
-                className
-              )}
-              style={{
-                opacity: isDraggedDescendant ? 0.5 : 1,
-                ...style,
-              }}
-            >
-              {handle}
+                {node.expanded && !isDragging && (
+                  <div
+                    style={{ width: scaffoldBlockPxWidth }}
+                    className={classnames(
+                      'rst__lineChildren',
+                      rowDirectionClass
+                    )}
+                  />
+                )}
+              </div>
+            )}
 
+          <div className={classnames('rst__rowWrapper', rowDirectionClass)}>
+            {/* Set the row preview to be used during drag and drop */}
+            {connectDragPreview(
               <div
                 className={classnames(
-                  'rst__rowContents',
-                  !canDrag && 'rst__rowContentsDragDisabled',
+                  'rst__row',
+                  isLandingPadActive && 'rst__rowLandingPad',
+                  isLandingPadActive && !canDrop && 'rst__rowCancelPad',
+                  isSearchMatch && 'rst__rowSearchMatch',
+                  isSearchFocus && 'rst__rowSearchFocus',
                   rowDirectionClass,
-                  itemClassName
+                  className
                 )}
+                style={{
+                  opacity: isDraggedDescendant ? 0.5 : 1,
+                  ...style,
+                }}
               >
-                <div className={classnames('rst__rowLabel', rowDirectionClass)}>
-                  <span
-                    className={classnames(
-                      'rst__rowTitle',
-                      node.subtitle && 'rst__rowTitleWithSubtitle'
-                    )}
-                  >
-                    {typeof nodeTitle === 'function'
-                      ? nodeTitle({
-                          node,
-                          path,
-                          treeIndex,
-                        })
-                      : nodeTitle}
-                  </span>
+                {handle}
 
-                  {nodeSubtitle && (
-                    <span className="rst__rowSubtitle">
-                      {typeof nodeSubtitle === 'function'
-                        ? nodeSubtitle({
+                <div
+                  className={classnames(
+                    'rst__rowContents',
+                    !canDrag && 'rst__rowContentsDragDisabled',
+                    rowDirectionClass,
+                    itemClassName
+                  )}
+                >
+                  <div
+                    className={classnames('rst__rowLabel', rowDirectionClass)}
+                  >
+                    <span
+                      className={classnames(
+                        'rst__rowTitle',
+                        node.subtitle && 'rst__rowTitleWithSubtitle'
+                      )}
+                    >
+                      {typeof nodeTitle === 'function'
+                        ? nodeTitle({
                             node,
                             path,
                             treeIndex,
                           })
-                        : nodeSubtitle}
+                        : nodeTitle}
                     </span>
-                  )}
-                </div>
 
-                <div className="rst__rowToolbar">
-                  {buttons.map((btn, index) => (
-                    <div
-                      key={index} // eslint-disable-line react/no-array-index-key
-                      className="rst__toolbarButton"
-                    >
-                      {btn}
-                    </div>
-                  ))}
+                    {nodeSubtitle && (
+                      <span className="rst__rowSubtitle">
+                        {typeof nodeSubtitle === 'function'
+                          ? nodeSubtitle({
+                              node,
+                              path,
+                              treeIndex,
+                            })
+                          : nodeSubtitle}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="rst__rowToolbar">
+                    {buttons.map((btn, index) => (
+                      <div
+                        key={index} // eslint-disable-line react/no-array-index-key
+                        className="rst__toolbarButton"
+                      >
+                        {btn}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+        {hasEndStaff}
+      </>
     );
   }
 }

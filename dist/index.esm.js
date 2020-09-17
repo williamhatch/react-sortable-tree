@@ -2103,13 +2103,14 @@ var NodeRendererDefault = /*#__PURE__*/function (_Component) {
           buttons = _this$props.buttons,
           className = _this$props.className,
           itemClassName = _this$props.itemClassName,
+          hasEndStaff = _this$props.hasEndStaff,
           style = _this$props.style,
           didDrop = _this$props.didDrop,
           treeId = _this$props.treeId,
           isOver = _this$props.isOver,
           parentNode = _this$props.parentNode,
           rowDirection = _this$props.rowDirection,
-          otherProps = _objectWithoutProperties(_this$props, ["scaffoldBlockPxWidth", "toggleChildrenVisibility", "connectDragPreview", "connectDragSource", "isDragging", "canDrop", "canDrag", "node", "title", "subtitle", "draggedNode", "path", "treeIndex", "isSearchMatch", "isSearchFocus", "buttons", "className", "itemClassName", "style", "didDrop", "treeId", "isOver", "parentNode", "rowDirection"]);
+          otherProps = _objectWithoutProperties(_this$props, ["scaffoldBlockPxWidth", "toggleChildrenVisibility", "connectDragPreview", "connectDragSource", "isDragging", "canDrop", "canDrag", "node", "title", "subtitle", "draggedNode", "path", "treeIndex", "isSearchMatch", "isSearchFocus", "buttons", "className", "itemClassName", "hasEndStaff", "style", "didDrop", "treeId", "isOver", "parentNode", "rowDirection"]);
 
       var nodeTitle = title || node.title;
       var nodeSubtitle = subtitle || node.subtitle;
@@ -2153,7 +2154,7 @@ var NodeRendererDefault = /*#__PURE__*/function (_Component) {
         };
       }
 
-      return /*#__PURE__*/React.createElement("div", _extends({
+      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", _extends({
         style: {
           height: '100%',
           display: 'inline-block'
@@ -2206,7 +2207,7 @@ var NodeRendererDefault = /*#__PURE__*/function (_Component) {
           ,
           className: "rst__toolbarButton"
         }, btn);
-      })))))));
+      }))))))), hasEndStaff);
     }
   }]);
 

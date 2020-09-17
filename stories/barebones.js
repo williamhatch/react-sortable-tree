@@ -22,16 +22,18 @@ export default class App extends Component {
         <SortableTree
           treeData={this.state.treeData}
           onChange={treeData => this.setState({ treeData })}
-          hasEndStaff={
-            <input
-              type="text"
-              style={{
-                marginBottom: 29,
-                marginLeft: 17,
-                verticalAlign: 'middle',
-              }}
-            />
-          }
+          generateNodeProps={({ node, path }) => ({
+            hasEndStaff: (
+              <input
+                type="text"
+                style={{
+                  marginBottom: 29,
+                  marginLeft: 17,
+                  verticalAlign: 'middle',
+                }}
+              />
+            ),
+          })}
         />
       </div>
     );
