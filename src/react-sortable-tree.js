@@ -2,14 +2,14 @@ import 'react-virtualized/styles.css';
 import './react-sortable-tree.css';
 
 import { AutoSizer, List } from 'react-virtualized';
-import { DndContext, DndProvider } from 'react-dnd';
-import React, { Component } from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndContext, DndProvider, createDndContext } from 'react-dnd';
+import React, { Component, useRef } from 'react';
 import withScrolling, {
   createHorizontalStrength,
   createScrollingComponent,
   createVerticalStrength,
 } from 'frontend-collective-react-dnd-scrollzone';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import { polyfill } from 'react-lifecycles-compat';
@@ -40,6 +40,7 @@ import classnames from './utils/classnames';
 import { slideRows } from './utils/generic-utils';
 
 let treeIdCounter = 1;
+const RNDContext = createDndContext(HTML5Backend);
 
 const mergeTheme = props => {
   const merged = {
@@ -952,11 +953,14 @@ const SortableTreeWithoutDndContext = props => (
   </DndContext.Consumer>
 );
 
-const SortableTree = props => (
-  <DndProvider backend={HTML5Backend}>
-    <SortableTreeWithoutDndContext {...props} />
-  </DndProvider>
-);
+const SortableTree = props => {
+  const manager = useRef(RNDContext);
+  return (
+    <DndProvider manager={manager.current.dragDropManager}>
+      <SortableTreeWithoutDndContext {...props} />
+    </DndProvider>
+  );
+};
 
 // Export the tree component without the react-dnd DragDropContext,
 // for when component is used with other components using react-dnd.

@@ -8,9 +8,9 @@ var reactVirtualized = require('react-virtualized');
 var reactDnd = require('react-dnd');
 var React = require('react');
 var React__default = _interopDefault(React);
-var reactDndHtml5Backend = require('react-dnd-html5-backend');
 var withScrolling = require('frontend-collective-react-dnd-scrollzone');
 var withScrolling__default = _interopDefault(withScrolling);
+var reactDndHtml5Backend = require('react-dnd-html5-backend');
 var PropTypes = _interopDefault(require('prop-types'));
 var isEqual = _interopDefault(require('lodash.isequal'));
 var reactDom = require('react-dom');
@@ -2534,6 +2534,7 @@ function slideRows(rows, fromIndex, toIndex) {
 }
 
 var treeIdCounter = 1;
+var RNDContext = reactDnd.createDndContext(reactDndHtml5Backend.HTML5Backend);
 
 var mergeTheme = function mergeTheme(props) {
   var merged = _objectSpread2(_objectSpread2({}, props), {}, {
@@ -3398,8 +3399,9 @@ var SortableTreeWithoutDndContext = function SortableTreeWithoutDndContext(props
 };
 
 var SortableTree = function SortableTree(props) {
+  var manager = React.useRef(RNDContext);
   return /*#__PURE__*/React__default.createElement(reactDnd.DndProvider, {
-    backend: reactDndHtml5Backend.HTML5Backend
+    manager: manager.current.dragDropManager
   }, /*#__PURE__*/React__default.createElement(SortableTreeWithoutDndContext, props));
 }; // Export the tree component without the react-dnd DragDropContext,
 
