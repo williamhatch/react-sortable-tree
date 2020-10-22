@@ -2142,9 +2142,12 @@ var NodeRendererDefault = /*#__PURE__*/function (_Component) {
           })));
         } else {
           // Show the handle used to initiate a drag-and-drop
-          handle = connectDragSource( /*#__PURE__*/React__default.createElement("div", {
+          var comp = itemClassName ? /*#__PURE__*/React__default.createElement("div", {
+            className: itemClassName
+          }) : /*#__PURE__*/React__default.createElement("div", {
             className: "rst__moveHandle"
-          }), {
+          });
+          handle = connectDragSource(comp, {
             dropEffect: 'copy'
           });
         }
@@ -2192,7 +2195,7 @@ var NodeRendererDefault = /*#__PURE__*/function (_Component) {
           opacity: isDraggedDescendant ? 0.5 : 1
         }, style)
       }, handle, /*#__PURE__*/React__default.createElement("div", {
-        className: classnames('rst__rowContents', !canDrag && 'rst__rowContentsDragDisabled', rowDirectionClass, itemClassName)
+        className: classnames('rst__rowContents', !canDrag && 'rst__rowContentsDragDisabled', rowDirectionClass)
       }, /*#__PURE__*/React__default.createElement("div", {
         className: classnames('rst__rowLabel', rowDirectionClass)
       }, /*#__PURE__*/React__default.createElement("span", {

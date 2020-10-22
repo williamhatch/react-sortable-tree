@@ -63,7 +63,13 @@ class NodeRendererDefault extends Component {
         );
       } else {
         // Show the handle used to initiate a drag-and-drop
-        handle = connectDragSource(<div className="rst__moveHandle" />, {
+
+        const comp = itemClassName ? (
+          <div className={itemClassName} />
+        ) : (
+          <div className="rst__moveHandle" />
+        );
+        handle = connectDragSource(comp, {
           dropEffect: 'copy',
         });
       }
@@ -141,8 +147,7 @@ class NodeRendererDefault extends Component {
                   className={classnames(
                     'rst__rowContents',
                     !canDrag && 'rst__rowContentsDragDisabled',
-                    rowDirectionClass,
-                    itemClassName
+                    rowDirectionClass
                   )}
                 >
                   <div

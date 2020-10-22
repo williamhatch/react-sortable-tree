@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import SortableTree from '../src';
 
+// import styles from './generic.css';
+
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
@@ -11,7 +13,7 @@ export default class App extends Component {
 
     this.state = {
       treeData: [
-        { title: 'Chicken', expanded: true, children: [{ title: 'Egg' }] },
+        { title: 'Chicken', expanded: true, children: [{ title: 'Egg1' }] },
       ],
     };
   }
@@ -23,6 +25,10 @@ export default class App extends Component {
           treeData={this.state.treeData}
           onChange={treeData => this.setState({ treeData })}
           generateNodeProps={({ node, path }) => ({
+            itemClassName:
+              node.title === 'Egg1'
+                ? 'rst__moveHandle_another'
+                : 'rst__moveHandle',
             hasEndStaff: (
               <input
                 type="text"
